@@ -13,13 +13,16 @@
   <url>http://www.example.com</url>
   <modules>
     <module>input-processing-service</module>
+      <module>filter-complex-service</module>
+      <module>eureka-server</module>
   </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
-    <spring.boot.maven.plugin.version>2.5.7</spring.boot.maven.plugin.version>
-    <spring.boot.dependencies.version>2.5.7</spring.boot.dependencies.version>
+    <spring.boot.maven.plugin.version>2.7.18</spring.boot.maven.plugin.version>
+    <spring.boot.dependencies.version>2.7.18</spring.boot.dependencies.version>
+    <spring-cloud.version>2021.0.7</spring-cloud.version>
   </properties>
 
   <dependencyManagement>
@@ -30,6 +33,13 @@
         <version>${spring.boot.dependencies.version}</version>
         <scope>import</scope>
         <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

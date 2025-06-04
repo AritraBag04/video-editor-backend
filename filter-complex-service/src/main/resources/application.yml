@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 8085
 
 spring:
   application:
-    name: input-processing
+    name: filter-complex
 
 eureka:
   client:
