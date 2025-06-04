@@ -15,6 +15,7 @@
     <module>input-processing-service</module>
       <module>filter-complex-service</module>
       <module>eureka-server</module>
+      <module>orchestrator-service</module>
   </modules>
 
   <properties>

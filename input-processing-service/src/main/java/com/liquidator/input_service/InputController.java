@@ -16,6 +16,7 @@ public class InputController {
         int audioTracks = input.getAudioTracks();
 
         // Logging the received video and audio tracks
+        log.info("Received request - {}", input);
         log.info("Received request - video: {}, audio: {}", videoTracks, audioTracks);
 
         // Handling exception
