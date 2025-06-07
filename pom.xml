@@ -16,6 +16,7 @@
       <module>filter-complex-service</module>
       <module>eureka-server</module>
       <module>orchestrator-service</module>
+      <module>upload-video-service</module>
   </modules>
 
   <properties>
