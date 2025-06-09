@@ -17,6 +17,7 @@
       <module>eureka-server</module>
       <module>orchestrator-service</module>
       <module>upload-video-service</module>
+      <module>execute-command-service</module>
   </modules>
 
   <properties>

@@ -1,5 +1,6 @@
 package com.liquidator.orchestrator;
 
+import com.liquidator.execute_command.ExecuteCommand;
 import com.liquidator.filter_complex.FilterResponse;
 import com.liquidator.filter_complex.FilterTimelineRequest;
 import com.liquidator.input_service.CommandResponse;
@@ -45,7 +46,19 @@ public class OrchestratorController {
         ).getBody();
 
         log.info("Response that we have gotten - {}, {}", inputResponse, filterResponse);
+        assert inputResponse != null;
+        assert filterResponse != null;
+        String command = buildCompleteCommand(inputResponse.command(), filterResponse.filterCommand());
 
+        restTemplate.postForEntity(
+                "http://EXEC-COMMAND/api/v1/execute-command",
+                new ExecuteCommand(command),
+                null
+        );
 
+    }
+
+    private String buildCompleteCommand(String input, String filterComplex){
+        return "ffmpeg -y "+input+" -filter_complex \""+filterComplex+"\" -map \"[outv]\" -map \"[outa]\" -c:v ffv1 -c:a flac output.mkv";
     }
 }

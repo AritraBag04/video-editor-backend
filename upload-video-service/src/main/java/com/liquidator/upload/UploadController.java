@@ -21,16 +21,25 @@ public class UploadController {
         }
 
         StringBuilder result = new StringBuilder();
+        int audio = 0, video = 0;
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
+                String fileName = file.getOriginalFilename();
                 result.append("Uploaded: ")
                         .append(file.getOriginalFilename())
                         .append(" (")
                         .append(file.getSize())
                         .append(" bytes)\n");
-
+                assert fileName != null;
                 // Optional: Save the file to disk
-                 file.transferTo(new File("/home/aritra/Desktop/" + file.getOriginalFilename()));
+                if (fileName.endsWith("mp4")) {
+                    file.transferTo(new File("/home/aritra/Desktop/video" + video + ".mp4"));
+                    video++;
+                }
+                else{
+                    file.transferTo(new File("/home/aritra/Desktop/audio"+audio+".mp4"));
+                    audio++;
+                }
             }
         }
 
