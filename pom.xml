@@ -18,6 +18,7 @@
       <module>orchestrator-service</module>
       <module>upload-video-service</module>
       <module>execute-command-service</module>
+      <module>download-video-service</module>
   </modules>
 
   <properties>
@@ -26,6 +27,7 @@
     <spring.boot.maven.plugin.version>2.7.18</spring.boot.maven.plugin.version>
     <spring.boot.dependencies.version>2.7.18</spring.boot.dependencies.version>
     <spring-cloud.version>2021.0.7</spring-cloud.version>
+    <aws.java.sdk.version>2.31.59</aws.java.sdk.version>
   </properties>
 
   <dependencyManagement>
@@ -41,6 +43,13 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
         <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>bom</artifactId>
+        <version>${aws.java.sdk.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
