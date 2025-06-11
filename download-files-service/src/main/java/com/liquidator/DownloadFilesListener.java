@@ -1,6 +1,6 @@
 package com.liquidator;
 
-import com.liquidator.orchestrator.DownloadFilesMessage;
+import com.liquidator.messages.DownloadFilesMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class DownloadFilesListener {
     public void downloadVideos(DownloadFilesMessage message){
         log.info("Received message - {}", message);
 
-        String path = message.getUserId() + message.getProjectId();
+        String path = message.getUserId() +"/"+ message.getProjectId();
         String bucketName = "my-video-editor-app-bucket";
 
         S3Client s3Client = S3Client.builder()

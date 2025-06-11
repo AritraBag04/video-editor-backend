@@ -3,6 +3,7 @@ package com.liquidator.orchestrator;
 import com.liquidator.filter_complex.FilterTimelineRequest;
 import com.liquidator.input_service.Input;
 import com.liquidator.messages.BuildCommandMessage;
+import com.liquidator.messages.DownloadFilesMessage;
 import com.liquidator.messages.PresignedURLMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -46,12 +47,11 @@ public class OrchestratorController {
                     filter
             );
 
-//            DownloadFilesMessage downloadMessage = new DownloadFilesMessage(
-//                    requestId,
-//                    "user_test",
-//                    "project_test",
-//                    Instant.now()
-//            );
+            DownloadFilesMessage downloadMessage = new DownloadFilesMessage(
+                    requestId,
+                    "user_test",
+                    "project_test"
+            );
             // Send messages to respective services via RabbitMQ
             rabbitTemplate.convertAndSend(
                     OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
@@ -63,10 +63,10 @@ public class OrchestratorController {
                     buildCommandMessage
             );
 
-//            rabbitTemplate.convertAndSend(
-//                    OrchestratorRabbitMQConfig.DOWNLOAD_FILES_ROUTING_KEY,
-//                    downloadMessage
-//            );
+            rabbitTemplate.convertAndSend(
+                    OrchestratorRabbitMQConfig.DOWNLOAD_FILES_ROUTING_KEY,
+                    downloadMessage
+            );
 
             // Return response immediately (async processing)
             ProcessResponse response = new ProcessResponse(

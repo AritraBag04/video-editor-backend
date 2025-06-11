@@ -1,0 +1,10 @@
+server:
+  port:
+    8086
+spring:
+  application:
+    name: build-command
+eureka:
+  client:
+    server-url:
+      defaultZone: http:localhost:8761/eureka
