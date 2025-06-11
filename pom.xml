@@ -16,9 +16,11 @@
       <module>filter-complex-service</module>
       <module>eureka-server</module>
       <module>orchestrator-service</module>
-      <module>upload-video-service</module>
+      <module>presigned-url-service</module>
       <module>execute-command-service</module>
-      <module>download-video-service</module>
+      <module>download-files-service</module>
+      <module>build-command-service</module>
+      <module>messages</module>
   </modules>
 
   <properties>

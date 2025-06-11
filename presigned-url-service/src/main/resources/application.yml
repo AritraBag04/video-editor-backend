@@ -1,0 +1,9 @@
+server:
+  port:
+    8083
+spring:
+  application:
+    name: presigned-url
+eureka:
+  client:
+    enabled: false

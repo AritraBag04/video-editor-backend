@@ -10,5 +10,4 @@ spring:
       max-request-size: 100MB
 eureka:
   client:
-    server-url:
-      defaultZone: http:localhost:8761/eureka
+    enabled: false
