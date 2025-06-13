@@ -1,8 +1,11 @@
 package com.liquidator;
 
 import com.liquidator.messages.DownloadFilesMessage;
+import com.liquidator.messages.JobStatusMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import software.amazon.awssdk.core.sync.ResponseTransformer;
@@ -18,10 +21,17 @@ import java.io.File;
 @Slf4j
 @Component
 public class DownloadFilesListener {
+    private final RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    public DownloadFilesListener(RabbitTemplate rabbitTemplate){
+        this.rabbitTemplate = rabbitTemplate;
+    }
     @RabbitListener(queues = DownloadFilesRabbitMQConfig.QUEUE_NAME)
     public void downloadVideos(DownloadFilesMessage message){
         log.info("Received message - {}", message);
 
+        String requestId = message.getRequestid();
         String path = message.getUserId() +"/"+ message.getProjectId();
         String bucketName = "my-video-editor-app-bucket";
 
@@ -46,5 +56,7 @@ public class DownloadFilesListener {
                     ResponseTransformer.toFile(new File("/home/aritra/Desktop/" + key.replace(path, "")))
             );
         }
+
+        rabbitTemplate.convertAndSend("job-status-exchange", "", new JobStatusMessage(requestId, "files-ready", null));
     }
 }

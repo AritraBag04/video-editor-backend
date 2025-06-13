@@ -53,10 +53,10 @@ public class OrchestratorController {
                     "project_test"
             );
             // Send messages to respective services via RabbitMQ
-            rabbitTemplate.convertAndSend(
-                    OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
-                    presignedURLMessage
-            );
+//            rabbitTemplate.convertAndSend(
+//                    OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
+//                    presignedURLMessage
+//            );
 
             rabbitTemplate.convertAndSend(
                     OrchestratorRabbitMQConfig.BUILD_COMMAND_ROUTING_KEY,

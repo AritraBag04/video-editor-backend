@@ -4,8 +4,10 @@ server:
 spring:
   application:
     name: exec-command
+  redis:
+    host: localhost
+    port: 6379
 
 eureka:
   client:
-    server-url:
-      defaultZone: http:localhost:8761/eureka
+    enabled: false
