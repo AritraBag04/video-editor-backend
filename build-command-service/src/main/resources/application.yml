@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: build-command
+
 eureka:
   client:
     server-url:

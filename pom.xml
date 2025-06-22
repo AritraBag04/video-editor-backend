@@ -21,6 +21,7 @@
       <module>download-files-service</module>
       <module>build-command-service</module>
       <module>messages</module>
+      <module>auth-service</module>
   </modules>
 
   <properties>

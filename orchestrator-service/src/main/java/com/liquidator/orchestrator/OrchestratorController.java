@@ -53,20 +53,20 @@ public class OrchestratorController {
                     "project_test"
             );
             // Send messages to respective services via RabbitMQ
-//            rabbitTemplate.convertAndSend(
-//                    OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
-//                    presignedURLMessage
-//            );
+            rabbitTemplate.convertAndSend(
+                    OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
+                    presignedURLMessage
+            );
 
             rabbitTemplate.convertAndSend(
                     OrchestratorRabbitMQConfig.BUILD_COMMAND_ROUTING_KEY,
                     buildCommandMessage
             );
 
-            rabbitTemplate.convertAndSend(
-                    OrchestratorRabbitMQConfig.DOWNLOAD_FILES_ROUTING_KEY,
-                    downloadMessage
-            );
+//            rabbitTemplate.convertAndSend(
+//                    OrchestratorRabbitMQConfig.DOWNLOAD_FILES_ROUTING_KEY,
+//                    downloadMessage
+//            );
 
             // Return response immediately (async processing)
             ProcessResponse response = new ProcessResponse(

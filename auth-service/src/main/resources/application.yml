@@ -1,0 +1,16 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: build-command
+  datasource:
+    url: jdbc:mysql://localhost:3307/Video-Editor
+    username: root
+    password: my_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+      hibernate:
+          ddl-auto: create-drop
+      show-sql: true
+  config:
+    import: "optional:env[.env]"
