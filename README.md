@@ -1,75 +1,93 @@
-# Video Editor Backend
+# 🎬 Liquidator: Video Editor Backend Platform
 
-A microservices-based video editor backend using Spring Boot, FFmpeg, RabbitMQ, Redis, Eureka, and AWS S3.
-
----
-
-## Technologies
-
-- Java, Spring Boot, Maven
-- FFmpeg (video processing)
-- RabbitMQ (message queue)
-- Redis (caching, job status)
-- Eureka (service discovery)
-- AWS S3 (file storage)
+The backend for a distributed video editing platform designed to mimic a real-time video editing UI, but with all processing handled asynchronously in the backend. Built using a microservices architecture with Spring Boot, RabbitMQ, Redis, and AWS S3.
 
 ---
 
-## Architecture Overview
+## 🛠️ Features
 
-- **API Gateway**: Entry point, authentication, routing
-- **Orchestrator**: Coordinates workflow
-- **Pre-Signed-URL Service**: Generates S3 upload URLs
-- **Build Command Service**: Constructs FFmpeg commands
-- **Input Processing Service**: Handles input file processing
-- **Filter Complex Service**: Builds FFmpeg filter-complex strings
-- **Download Files Service**: Downloads files from S3
-- **Execute Command Service**: Runs FFmpeg to produce final video
-
----
-
-## Workflow
-
-1. User sends POST request to API Gateway.
-2. API Gateway authenticates user.
-3. Request forwarded to Orchestrator.
-4. Orchestrator requests pre-signed S3 URLs; API Gateway returns them to frontend.
-5. Orchestrator asynchronously triggers Build Command Service.
-6. Build Command Service calls Input Processing and Filter Complex Services to build FFmpeg command.
-7. Services update job status in Redis.
-8. Frontend notifies Download Files Service (via API Gateway) after upload.
-9. Download Files Service downloads files from S3.
-10. When files and command are ready, Execute Command Service runs FFmpeg and stores output in S3.
+- ✂️ **Segment-Based Video Editing**: Accepts timelines with multiple video cuts and rearrangements.
+- ☁️ **Presigned URL Generation**: Secure upload of raw footage to S3 buckets.
+- 📦 **Distributed Microservices**:
+    - File downloader
+    - FFmpeg command builder
+    - Command executor
+- 📶 **Asynchronous Orchestration**: Message-driven coordination using RabbitMQ.
+- ⚙️ **Redis for Job Coordination**: Tracks readiness of command and files before execution.
+- 🎥 **Backend-Only Simulation**: Allows frontend to show editing UI while actual processing is deferred.
 
 ---
 
----
+## 🧱 Tech Stack
 
-## Storage
-
-- **Videos/Files**: AWS S3
-- **Job Status/Cache**: Redis
-
----
-
-## Service Discovery
-
-- All services register with Eureka.
+- **Language**: Java (Spring Boot)
+- **Queueing**: RabbitMQ (Topic Exchange)
+- **Temporary State Store**: Redis
+- **Cloud Storage**: AWS S3 (Presigned URLs)
+- **Video Processing**: FFmpeg
+- **Build Tool**: Maven
 
 ---
 
-## Asynchronous Processing
+## 🧩 Microservices Overview
 
-- RabbitMQ for inter-service messaging.
+| Service                 | Description |
+|------------------------|-------------|
+| `orchestrator`         | Publishes job lifecycle messages and request routing |
+| `get-presigned-urls`   | Generates presigned upload links for video chunks |
+| `download-files`       | Downloads video files from S3 once uploaded |
+| `build-command`        | Creates FFmpeg commands based on segment data |
+| `execute-command`      | Waits until all assets and commands are ready, then runs the FFmpeg command |
+| `job-status-listener`  | Listens to status updates and coordinates final execution via Redis |
 
 ---
 
-## Security
+## ⚙️ Message Flow
 
-- API Gateway handles authentication and authorization.
+1. **Orchestrator** sends a job request.
+2. **Get-Presigned-Urls Service** returns signed upload links.
+3. Once uploaded, **Download-Files Service** notifies via RabbitMQ.
+4. **Build-Command Service** creates the FFmpeg command for the job.
+5. **Job-Status Listener** stores progress in Redis.
+6. Once all pieces are ready, **Execute-Command Service** runs the job.
 
 ---
 
-## Output
+## 🧪 How to Run
 
-- Final video stored in S3, accessible via pre-signed URL.
+### 🐳 Docker Prerequisites
+
+```bash
+docker run -d --name redis -p 6379:6379 redis
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
+```
+
+# Example Payload
+```json
+{
+  "input": {
+        "videoTracks" : 2,
+        "audioTracks" : 0
+  },
+  "filter": {
+    "videoTimeline": [
+        {
+            "videoTrack": 0,
+            "start": 0,
+            "end": 10
+        },
+        {
+            "videoTrack": 1,
+            "start": 5,
+            "end": 10
+        },
+        {
+            "videoTrack": 0,
+            "start": 10,
+            "end": 20
+        }
+    ],
+    "audioTimeline": []
+  }
+}
+```
