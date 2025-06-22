@@ -2,7 +2,7 @@ server:
   port: 8087
 spring:
   application:
-    name: build-command
+    name: auth
   datasource:
     url: jdbc:mysql://localhost:3307/Video-Editor
     username: root
@@ -14,3 +14,7 @@ spring:
       show-sql: true
   config:
     import: "optional:env[.env]"
+eureka:
+  client:
+    server-url:
+      defaultZone: http:localhost:8761/eureka

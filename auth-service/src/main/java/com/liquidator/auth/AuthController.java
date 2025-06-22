@@ -1,6 +1,7 @@
 package com.liquidator.auth;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.SecretKey;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Map;
 import java.util.regex.*;
 
@@ -50,9 +52,14 @@ public class AuthController {
          byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
          SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 
-         String jws = Jwts.builder().subject(existingUser.getEmail()).signWith(key).compact();
+         String token = Jwts.builder()
+                 .setSubject(existingUser.getUserId().toString())
+                 .setIssuedAt(new Date())
+                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+                 .signWith(SignatureAlgorithm.HS256, key)
+                 .compact();
 
-         return ResponseEntity.ok(Map.of("token", jws));
+         return ResponseEntity.ok(Map.of("token", token));
      }
 
      // Example endpoint for user signup

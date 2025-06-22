@@ -1,4 +1,4 @@
-package com.liquidator.auth;
+package com.liquidator.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class AuthApplication {
+public class GatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AuthApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 }

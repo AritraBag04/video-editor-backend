@@ -22,6 +22,7 @@
       <module>build-command-service</module>
       <module>messages</module>
       <module>auth-service</module>
+      <module>api-gateway-service</module>
   </modules>
 
   <properties>

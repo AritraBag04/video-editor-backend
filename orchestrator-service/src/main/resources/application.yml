@@ -1,6 +1,5 @@
 server:
-  port:
-    8082
+  port: 8082
 spring:
   application:
     name: orchestrator
@@ -10,4 +9,5 @@ spring:
       max-request-size: 100MB
 eureka:
   client:
-    enabled: false
+    server-url:
+      defaultZone: http:localhost:8761/eureka

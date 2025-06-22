@@ -18,10 +18,10 @@ public class BuildCommandRabbitMQConfig {
         return new Queue(QUEUE_NAME, true);
     }
 
-    @Bean
-    public Queue jobStatusQueue() {
-        return new Queue(JOB_STATUS_QUEUE, true); // true = durable
-    }
+//    @Bean
+//    public Queue jobStatusQueue() {
+//        return new Queue(JOB_STATUS_QUEUE, true); // true = durable
+//    }
 
     @Bean
     public Binding buildCommandBinding(TopicExchange videoProcessingExchange) {
