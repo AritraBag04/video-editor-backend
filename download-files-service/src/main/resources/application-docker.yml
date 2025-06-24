@@ -1,0 +1,16 @@
+server:
+  port:
+    8085
+spring:
+  application:
+    name: download-video
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+  redis:
+    host: redis
+    port: 6379
+eureka:
+  client:
+    enabled: false
+

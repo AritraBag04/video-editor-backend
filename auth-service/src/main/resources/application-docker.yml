@@ -1,0 +1,21 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: auth
+  datasource:
+    url: jdbc:mysql://mysql:3306/Video-Editor
+    username: root
+    password: my_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  config:
+    import: "optional:env[.env]"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+

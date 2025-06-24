@@ -1,0 +1,17 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: orchestrator
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+
