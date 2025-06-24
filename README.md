@@ -1,4 +1,4 @@
-# 🎬 Liquidator: Video Editor Backend Platform
+# 🎬 Video Editor Backend Platform
 
 The backend for a distributed video editing platform designed to mimic a real-time video editing UI, but with all processing handled asynchronously in the backend. Built using a microservices architecture with Spring Boot, RabbitMQ, Redis, and AWS S3.
 
