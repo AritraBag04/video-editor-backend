@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class ProcessRequest {
+    private String projectId;
+    private String userEmail;
     private Input input;
     private FilterTimelineRequest filterTimelineRequest;
 }

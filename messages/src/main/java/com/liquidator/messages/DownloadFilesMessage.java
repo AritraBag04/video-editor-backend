@@ -12,4 +12,6 @@ public class DownloadFilesMessage {
     private String requestid;
     private String userId;
     private String projectId;
+    private int videoTracks;
+    private int audioTracks;
 }

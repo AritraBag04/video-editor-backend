@@ -3,6 +3,7 @@ package com.liquidator.auth;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.regex.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -65,9 +67,14 @@ public class AuthController {
      // Example endpoint for user signup
      @PostMapping("/signup")
      public ResponseEntity<?> signup(@RequestBody User user) {
-        if (!isValidEmail(user.getEmail())) {
-            return ResponseEntity.badRequest().body("Invalid email format");
-        }
+         log.info("Received signup request for user: {}", user.getEmail());
+         try {
+             if (!isValidEmail(user.getEmail())) {
+                 return ResponseEntity.badRequest().body("Invalid email format");
+             }
+         } catch(Exception e){
+             log.error("The received email: {}", user.getEmail());
+         }
         User secureUser = User.builder()
                 .email(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))

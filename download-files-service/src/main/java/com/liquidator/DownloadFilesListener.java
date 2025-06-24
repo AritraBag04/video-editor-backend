@@ -32,7 +32,11 @@ public class DownloadFilesListener {
         log.info("Received message - {}", message);
 
         String requestId = message.getRequestid();
-        String path = message.getUserId() +"/"+ message.getProjectId();
+        String email = message.getUserId();
+
+        String path = email +"/"+ message.getProjectId();
+        log.info("Downloading files for user: {}, project: {}", email, message.getProjectId());
+        log.info("Path: {}", path);
         String bucketName = "my-video-editor-app-bucket";
 
         S3Client s3Client = S3Client.builder()
@@ -45,7 +49,11 @@ public class DownloadFilesListener {
                 .build();
 
         ListObjectsV2Response listRes = s3Client.listObjectsV2(listReq);
+        while(listRes.contents().size() < message.getVideoTracks()+ message.getAudioTracks()){
+            listRes = s3Client.listObjectsV2(listReq);
+        }
 
+        log.info("Files to download: {}", listRes.contents().size());
         for (S3Object s3Object : listRes.contents()) {
             String key = s3Object.key();
             log.info("Download - {}", key);
@@ -53,10 +61,10 @@ public class DownloadFilesListener {
                             .bucket(bucketName)
                             .key(key)
                             .build(),
-                    ResponseTransformer.toFile(new File("/home/aritra/Desktop/" + key.replace(path, "")))
+                    ResponseTransformer.toFile(new File("/app/downloads/" + key.replace(path, "")))
             );
         }
-
+        log.info("Sending job-status message to job-status-exchange for requestId: {}", requestId);
         rabbitTemplate.convertAndSend("job-status-exchange", "", new JobStatusMessage(requestId, "files-ready", null));
     }
 }

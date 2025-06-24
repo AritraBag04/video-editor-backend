@@ -48,10 +48,12 @@ public class JobStatusListener {
         BoundHashOperations<String, Object, Object> ops = redisTemplate.boundHashOps(key);
 
         if ("files-ready".equals(message.getStatus())) {
+            log.info("Files are ready for request ID: {}", message.getRequestId());
             ops.put("filesReady", true);
         }
 
         if ("command-ready".equals(message.getStatus())) {
+            log.info("✅ Received 'command-ready' for requestId {}", message.getRequestId());
             ops.put("commandReady", true);
             ops.put("command", message.getCommand());
         }
@@ -65,7 +67,7 @@ public class JobStatusListener {
             String command = (String) ops.get("command");
             log.info("Executing command for {}: {}", message.getRequestId(), command);
             ProcessBuilder processBuilder = new ProcessBuilder("sh", "-c", command);
-            processBuilder.directory(new File("/home/aritra/Desktop/"));
+            processBuilder.directory(new File("/app/downloads"));
             processBuilder.redirectErrorStream(true);
 
             try {

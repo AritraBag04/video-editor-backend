@@ -30,33 +30,26 @@ public class OrchestratorController {
         try {
             // Generate unique request ID for tracking
             String requestId = UUID.randomUUID().toString();
+
+            String projectId = request.getProjectId();
+            String userEmail = request.getUserEmail();
             // input for input-processing-service
             Input input = request.getInput();
             //filterTimelineRequest for filter-complex-service
             FilterTimelineRequest filter = request.getFilterTimelineRequest();
-
-            // Create messages for different services
-            PresignedURLMessage presignedURLMessage = new PresignedURLMessage(
-                    requestId,
-                    input
-            );
-
             BuildCommandMessage buildCommandMessage = new BuildCommandMessage(
                     requestId,
                     input,
                     filter
             );
-
             DownloadFilesMessage downloadMessage = new DownloadFilesMessage(
                     requestId,
-                    "user_test",
-                    "project_test"
+                    userEmail,
+                    projectId,
+                    input.getVideoTracks(),
+                    input.getAudioTracks()
             );
             // Send messages to respective services via RabbitMQ
-//            rabbitTemplate.convertAndSend(
-//                    OrchestratorRabbitMQConfig.PRESIGNED_URLS_ROUTING_KEY,
-//                    presignedURLMessage
-//            );
 
             rabbitTemplate.convertAndSend(
                     OrchestratorRabbitMQConfig.BUILD_COMMAND_ROUTING_KEY,
