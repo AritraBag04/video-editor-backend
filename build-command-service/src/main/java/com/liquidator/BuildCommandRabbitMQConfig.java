@@ -15,7 +15,7 @@ public class BuildCommandRabbitMQConfig {
 
     @Bean
     public Queue buildCommandQueue(){
-        return new Queue(QUEUE_NAME, true);
+        return new Queue(QUEUE_NAME, false);
     }
 
 //    @Bean

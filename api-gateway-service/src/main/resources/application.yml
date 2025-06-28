@@ -40,6 +40,12 @@ spring:
             - Path=/api/v1/presigned-urls/**
           filters:
             - JwtAuthFilter
+        - id: project-service
+          uri: lb://PROJECT
+          predicates:
+            - Path=/api/v1/project/**
+          filters:
+            - JwtAuthFilter
 
 eureka:
   client:

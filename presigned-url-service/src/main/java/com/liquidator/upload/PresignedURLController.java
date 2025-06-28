@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
@@ -33,7 +36,7 @@ public class PresignedURLController {
         log.info("Received request - userEmail: {}", userEmail);
 
         ArrayList<String> preSignedURLs = new ArrayList<String>();
-        UUID projectId = UUID.randomUUID();
+            UUID projectId = UUID.randomUUID();
 
         String path = userEmail + "/" + projectId; // Generate a unique project ID
 
@@ -73,7 +76,35 @@ public class PresignedURLController {
         );
     }
 
+    @GetMapping("/api/v1/presigned-urls/download")
+    public ResponseEntity<String> getPresignedDownloadURL(
+        @RequestParam String requestId,
+        @RequestParam String fileName
+    ) {
+        String bucketName = "my-video-editor-app-bucket"; // Bucket name to be used
+
+        log.info("Received request for download - requestId: {}, fileName: {}", requestId, fileName);
+
+        String path = requestId + "/" + fileName; // Generate a unique path for the file
+
+        String presignedUrl = createPresignedGetUrl(bucketName, path);
+        log.info("Generated presigned URL for download: {}", presignedUrl);
+        return ResponseEntity.ok(presignedUrl);
+    }
+
+    @GetMapping("/api/v1/presigned-urls/upload")
+    public ResponseEntity<String> getPresignedUploadURL(
+        @RequestParam String requestId
+    ) {
+        log.info("Received request for upload - requestId: {}", requestId);
+        String bucketName = "my-video-editor-app-bucket";
+        String keyName = requestId + "/output.mp4";
+        String presignedUrl = createPresignedUrl(bucketName, keyName, new HashMap<>());
+        return ResponseEntity.ok(presignedUrl);
+    }
+
     /* Create a presigned URL to use in a subsequent PUT request */
+    // This is for uploading files to S3
     public String createPresignedUrl(String bucketName, String keyName, Map<String, String> metadata) {
         try (S3Presigner presigner = S3Presigner.create()) {
 
@@ -92,6 +123,28 @@ public class PresignedURLController {
             PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
             String myURL = presignedRequest.url().toString();
             log.info("Presigned URL to upload a file to: [{}]", myURL);
+            log.info("HTTP method: [{}]", presignedRequest.httpRequest().method());
+
+            return presignedRequest.url().toExternalForm();
+        }
+    }
+
+    // This is for downloading files from S3
+    public String createPresignedGetUrl(String bucketName, String keyName) {
+        try (S3Presigner presigner = S3Presigner.create()) {
+
+            GetObjectRequest objectRequest = GetObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(keyName)
+                    .build();
+
+            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                    .signatureDuration(Duration.ofMinutes(10))  // The URL will expire in 10 minutes.
+                    .getObjectRequest(objectRequest)
+                    .build();
+
+            PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(presignRequest);
+            log.info("Presigned URL: [{}]", presignedRequest.url().toString());
             log.info("HTTP method: [{}]", presignedRequest.httpRequest().method());
 
             return presignedRequest.url().toExternalForm();

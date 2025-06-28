@@ -1,0 +1,17 @@
+server:
+    port: 8089
+spring:
+    application:
+        name: project
+    datasource:
+        url: jdbc:mysql://localhost:3306/Project-DB
+        username: root
+        password: root
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true

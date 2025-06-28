@@ -23,6 +23,7 @@
       <module>messages</module>
       <module>auth-service</module>
       <module>api-gateway-service</module>
+      <module>project-service</module>
   </modules>
 
   <properties>

@@ -43,7 +43,7 @@ public class BuildCommandListener {
                 FilterResponse.class
         ).getBody();
 
-        String command = "ffmpeg "+commandResponse.command()+" -filter_complex \""+filterResponse.filterCommand()+"\" -map \"[outv]\" -map \"[outa]\" -c:v ffv1 -c:a flac output.mkv";
+        String command = "ffmpeg -y "+commandResponse.command()+" -filter_complex \""+filterResponse.filterCommand()+"\" -map \"[outv]\" -map \"[outa]\" -c:v libx264 -c:a aac output.mp4";
         log.info("Command built {}",command);
 
         rabbitTemplate.convertAndSend("job-status-exchange", "", new JobStatusMessage(requestId, "command-ready", command));

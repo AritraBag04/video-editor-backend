@@ -10,9 +10,10 @@ spring:
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       globalcors:
+        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://127.0.0.1:3000,http://127.0.0.1:3001,https://video-editor-phi-eight.vercel.app/"
+            allowedOrigins: "http://127.0.0.1:3000,http://127.0.0.1:3001,https://video-editor-phi-eight.vercel.app"
             allowedHeaders: "*"
             allowedMethods:
               - GET
@@ -39,6 +40,12 @@ spring:
           uri: lb://PRESIGNED-URL
           predicates:
             - Path=/api/v1/presigned-urls/**
+          filters:
+            - JwtAuthFilter
+        - id: project-service
+          uri: lb://PROJECT
+          predicates:
+            - Path=/api/v1/project/**
           filters:
             - JwtAuthFilter
 

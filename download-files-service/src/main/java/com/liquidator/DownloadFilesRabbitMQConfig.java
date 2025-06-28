@@ -15,7 +15,7 @@ public class DownloadFilesRabbitMQConfig {
 
     @Bean
     public Queue presignedUrlsQueue() {
-        return new Queue(QUEUE_NAME, true);
+        return new Queue(QUEUE_NAME, false);
     }
 
     @Bean

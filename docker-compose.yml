@@ -113,5 +113,11 @@ services:
       - auth-service
       - orchestrator-service
       - eureka-server
+  project-service:
+    image: project-service:latest
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mysql
 volumes:
   mysql-data:
