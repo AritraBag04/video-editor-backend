@@ -1,24 +1,24 @@
-# 🎬 Video Editor Backend Platform
+# Video Editor Backend Platform
 
 The backend for a distributed video editing platform designed to mimic a real-time video editing UI, but with all processing handled asynchronously in the backend. Built using a microservices architecture with Spring Boot, RabbitMQ, Redis, and AWS S3.
 
 ---
 
-## 🛠️ Features
+## Features
 
-- ✂️ **Segment-Based Video Editing**: Accepts timelines with multiple video cuts and rearrangements.
-- ☁️ **Presigned URL Generation**: Secure upload of raw footage to S3 buckets.
-- 📦 **Distributed Microservices**:
+- **Segment-Based Video Editing**: Accepts timelines with multiple video cuts and rearrangements.
+- **Presigned URL Generation**: Secure upload of raw footage to S3 buckets.
+- **Distributed Microservices**:
     - File downloader
     - FFmpeg command builder
     - Command executor
-- 📶 **Asynchronous Orchestration**: Message-driven coordination using RabbitMQ.
-- ⚙️ **Redis for Job Coordination**: Tracks readiness of command and files before execution.
-- 🎥 **Backend-Only Simulation**: Allows frontend to show editing UI while actual processing is deferred.
+- **Asynchronous Orchestration**: Message-driven coordination using RabbitMQ.
+- **Redis for Job Coordination**: Tracks readiness of command and files before execution.
+- **Backend-Only Simulation**: Allows frontend to show editing UI while actual processing is deferred.
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Language**: Java (Spring Boot)
 - **Queueing**: RabbitMQ (Topic Exchange)
@@ -29,7 +29,7 @@ The backend for a distributed video editing platform designed to mimic a real-ti
 
 ---
 
-## 🧩 Microservices Overview
+## Microservices Overview
 
 | Service                 | Description |
 |------------------------|-------------|
@@ -42,7 +42,7 @@ The backend for a distributed video editing platform designed to mimic a real-ti
 
 ---
 
-## ⚙️ Message Flow
+## Message Flow
 
 1. **Orchestrator** sends a job request.
 2. **Get-Presigned-Urls Service** returns signed upload links.
@@ -53,9 +53,9 @@ The backend for a distributed video editing platform designed to mimic a real-ti
 
 ---
 
-## 🧪 How to Run
+## How to Run
 
-### 🐳 Docker Prerequisites
+### Docker Prerequisites
 
 ```bash
 docker run -d --name redis -p 6379:6379 redis
